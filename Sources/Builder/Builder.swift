@@ -1,7 +1,7 @@
-public import Buffer_Linear_Primitives
+public import Buffer_Linear
 public import Memory_Allocator_Primitive
-public import Memory_Heap_Primitives
-public import Storage_Contiguous_Primitives
+public import Memory_Heap
+public import Storage_Contiguous
 
 @resultBuilder
 public enum Builder<Component: ~Copyable> {}

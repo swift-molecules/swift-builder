@@ -1,7 +1,7 @@
-public import Builder_Primitives
+public import Builder
 import Memory_Allocator_Primitive
-import Memory_Heap_Primitives
-import Storage_Contiguous_Primitives
+import Memory_Heap
+import Storage_Contiguous
 
 extension Fixture {
 

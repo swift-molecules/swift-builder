@@ -1,6 +1,6 @@
 description: "A shared, macro-free result-builder grammar for declarative element collection, in Swift."
 topics:
-  - primitives
+  - molecules
   - result-builder
   - builder
   - dsl

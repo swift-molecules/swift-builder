@@ -1,4 +1,4 @@
-# Builder Primitives
+# Builder
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
@@ -11,7 +11,7 @@ A shared, macro-free result-builder grammar for declarative element collection �
 The cleanest path is the `Buildable` protocol. Conform a growable family by supplying empty construction (`Initiable`'s `init()`) and one neutral grow operation, `add(_:)`. In exchange the family receives the declarative `init(@Builder<Element> …)` for free — the accumulator type never appears in the family's own code:
 
 ```swift
-import Builder_Primitives
+import Builder
 
 extension Set.Ordered: Buildable {
     // init() is the set's empty construction (Initiable)
@@ -33,7 +33,7 @@ Per-family behaviour (a set's deduplication, a dictionary's key-merge, a sorted 
 A family that does not conform to `Buildable` can reference `Builder` directly as the build attribute on an initializer and drain the collected buffer itself:
 
 ```swift
-import Builder_Primitives
+import Builder
 
 struct Bag {
     var storage: Buffer<Storage<Int>.Contiguous<Memory.Heap<Int>>>.Linear
@@ -84,7 +84,7 @@ let ints = Bag {
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-primitives/swift-builder-primitives.git", branch: "main")
+    .package(url: "https://github.com/swift-molecules/swift-builder.git", branch: "main")
 ]
 ```
 
@@ -92,7 +92,7 @@ dependencies: [
 .target(
     name: "App",
     dependencies: [
-        .product(name: "Builder Primitives", package: "swift-builder-primitives"),
+        .product(name: "Builder", package: "swift-builder"),
     ]
 )
 ```
@@ -103,12 +103,12 @@ Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 
 
 ## Architecture
 
-Two library products. Depends on four primitives: `swift-buffer-linear-primitives`, `swift-initialization-primitives`, `swift-storage-primitives`, and `swift-memory-heap-primitives` (the verbose `Storage.Contiguous<Memory.Heap>` accumulator requires each as a direct dependency).
+Two library products. Depends on four molecules: `swift-buffer-linear`, `swift-initialization`, `swift-storage`, and `swift-memory-heap` (the verbose `Storage.Contiguous<Memory.Heap>` accumulator requires each as a direct dependency).
 
 | Product | Target | When to import |
 |---------|--------|----------------|
-| `Builder Primitives` | `Sources/Builder Primitives/` | Whenever a type composes the shared collection grammar via `@Builder<Component>`, or conforms to `Buildable`. |
-| `Builder Primitives Test Support` | `Tests/Support/` | In test targets that need the toy consumer fixtures. |
+| `Builder` | `Sources/Builder/` | Whenever a type composes the shared collection grammar via `@Builder<Component>`, or conforms to `Buildable`. |
+| `Builder Test Support` | `Tests/Support/` | In test targets that need the toy consumer fixtures. |
 
 ### Accumulator
 

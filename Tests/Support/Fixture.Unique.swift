@@ -1,4 +1,4 @@
-public import Builder_Primitives
+public import Builder
 
 extension Fixture {
 

@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-builder-primitives",
+    name: "swift-builder",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -14,81 +14,81 @@ let package = Package(
     products: [
 
         .library(
-            name: "Builder Primitives",
-            targets: ["Builder Primitives"]
+            name: "Builder",
+            targets: ["Builder"]
         ),
 
         .library(
-            name: "Builder Primitives Test Support",
-            targets: ["Builder Primitives Test Support"]
+            name: "Builder Test Support",
+            targets: ["Builder Test Support"]
         ),
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-buffer-linear-primitives.git",
+            url: "https://github.com/swift-molecules/swift-buffer-linear.git",
             branch: "main"
         ),
 
         .package(
-            url: "https://github.com/swift-primitives/swift-initialization-primitives.git",
+            url: "https://github.com/swift-molecules/swift-initialization.git",
             branch: "main"
         ),
 
         .package(
-            url: "https://github.com/swift-primitives/swift-storage-primitives.git",
+            url: "https://github.com/swift-molecules/swift-storage.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-memory-heap-primitives.git",
+            url: "https://github.com/swift-molecules/swift-memory-heap.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-memory-allocation-primitives.git",
+            url: "https://github.com/swift-molecules/swift-memory-allocation.git",
             branch: "main"
         ),
     ],
     targets: [
 
         .target(
-            name: "Builder Primitives",
+            name: "Builder",
             dependencies: [
                 .product(
-                    name: "Buffer Linear Primitives",
-                    package: "swift-buffer-linear-primitives"
+                    name: "Buffer Linear",
+                    package: "swift-buffer-linear"
                 ),
                 .product(
-                    name: "Initialization Primitives",
-                    package: "swift-initialization-primitives"
+                    name: "Initialization",
+                    package: "swift-initialization"
                 ),
                 .product(
-                    name: "Storage Contiguous Primitives",
-                    package: "swift-storage-primitives"
+                    name: "Storage Contiguous",
+                    package: "swift-storage"
                 ),
-                .product(name: "Memory Heap Primitives", package: "swift-memory-heap-primitives"),
+                .product(name: "Memory Heap", package: "swift-memory-heap"),
                 .product(
                     name: "Memory Allocator Primitive",
-                    package: "swift-memory-allocation-primitives"
+                    package: "swift-memory-allocation"
                 ),
             ]
         ),
 
         .target(
-            name: "Builder Primitives Test Support",
+            name: "Builder Test Support",
             dependencies: [
-                "Builder Primitives",
+                "Builder",
                 .product(
-                    name: "Buffer Linear Primitives Test Support",
-                    package: "swift-buffer-linear-primitives"
+                    name: "Buffer Linear Test Support",
+                    package: "swift-buffer-linear"
                 ),
             ],
             path: "Tests/Support"
         ),
 
         .testTarget(
-            name: "Builder Primitives Tests",
+            name: "Builder Tests",
             dependencies: [
-                "Builder Primitives",
-                "Builder Primitives Test Support",
+                "Builder",
+                "Builder Test Support",
             ]
         ),
     ],
