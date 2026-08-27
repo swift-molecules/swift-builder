@@ -12,15 +12,17 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-
         .library(
             name: "Builder",
             targets: ["Builder"]
         ),
-
         .library(
-            name: "Builder Test Support",
-            targets: ["Builder Test Support"]
+            name: "Builder Standard Library Integration",
+            targets: ["Builder Standard Library Integration"]
+        ),
+        .library(
+            name: "Builder Apple Foundation Integration",
+            targets: ["Builder Apple Foundation Integration"]
         ),
     ],
     dependencies: [
@@ -28,12 +30,10 @@ let package = Package(
             url: "https://github.com/swift-molecules/swift-buffer-linear.git",
             branch: "main"
         ),
-
         .package(
             url: "https://github.com/swift-molecules/swift-initialization.git",
             branch: "main"
         ),
-
         .package(
             url: "https://github.com/swift-molecules/swift-storage.git",
             branch: "main"
@@ -48,7 +48,6 @@ let package = Package(
         ),
     ],
     targets: [
-
         .target(
             name: "Builder",
             dependencies: [
@@ -71,25 +70,20 @@ let package = Package(
                 ),
             ]
         ),
-
         .target(
-            name: "Builder Test Support",
+            name: "Builder Standard Library Integration",
+            dependencies: ["Builder"]
+        ),
+        .target(
+            name: "Builder Apple Foundation Integration",
             dependencies: [
                 "Builder",
-                .product(
-                    name: "Buffer Linear Test Support",
-                    package: "swift-buffer-linear"
-                ),
-            ],
-            path: "Tests/Support"
+                "Builder Standard Library Integration",
+            ]
         ),
-
         .testTarget(
             name: "Builder Tests",
-            dependencies: [
-                "Builder",
-                "Builder Test Support",
-            ]
+            dependencies: ["Builder"]
         ),
     ],
     swiftLanguageModes: [.v6]

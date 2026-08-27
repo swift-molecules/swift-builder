@@ -1,4 +1,4 @@
-public import Builder
+import Builder
 import Memory_Allocator_Primitive
 import Memory_Heap
 import Storage_Contiguous
