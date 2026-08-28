@@ -36,9 +36,12 @@ A family that does not conform to `Buildable` can reference `Builder` directly a
 import Builder
 
 struct Bag {
-    var storage: Buffer<Storage<Int>.Contiguous<Memory.Heap<Int>>>.Linear
+    var storage: Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
 
-    init(@Builder<Int> _ content: () -> Buffer<Storage<Int>.Contiguous<Memory.Heap<Int>>>.Linear) {
+    init(
+        @Builder<Int> _ content: () ->
+            Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
+    ) {
         self.storage = content()
     }
 }
@@ -60,9 +63,13 @@ Move-only (`~Copyable`) elements compose declaratively too — the grammar consu
 struct FileHandle: ~Copyable { /* … */ }
 
 struct Handles: ~Copyable {
-    var storage: Buffer<Storage<FileHandle>.Contiguous<Memory.Heap<FileHandle>>>.Linear
+    var storage:
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<FileHandle>>.Linear
 
-    init(@Builder<FileHandle> _ content: () -> Buffer<Storage<FileHandle>.Contiguous<Memory.Heap<FileHandle>>>.Linear) {
+    init(
+        @Builder<FileHandle> _ content: () ->
+            Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<FileHandle>>.Linear
+    ) {
         self.storage = content()
     }
 }
@@ -97,26 +104,27 @@ dependencies: [
 )
 ```
 
-Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 (or the matching Linux / Windows toolchain).
+Requires Swift 6.4 and macOS 27 / iOS 27 / tvOS 27 / watchOS 27 / visionOS 27 (or the matching Linux / Windows toolchain).
 
 ---
 
 ## Architecture
 
-Two library products. Depends on four molecules: `swift-buffer-linear`, `swift-initialization`, `swift-storage`, and `swift-memory-heap` (the verbose `Storage.Contiguous<Memory.Heap>` accumulator requires each as a direct dependency).
+Three library products. The core composes the converged Buffer Linear, Initialization, Storage Memory, Memory Small, and Memory Allocation owners; Foundation remains isolated to the Apple Foundation integration product.
 
 | Product | Target | When to import |
 |---------|--------|----------------|
 | `Builder` | `Sources/Builder/` | Whenever a type composes the shared collection grammar via `@Builder<Component>`, or conforms to `Buildable`. |
-| `Builder Test Support` | `Tests/Support/` | In test targets that need the toy consumer fixtures. |
+| `Builder Standard Library Integration` | `Sources/Builder Standard Library Integration/` | Standard-library integration surface. |
+| `Builder Apple Foundation Integration` | `Sources/Builder Apple Foundation Integration/` | Apple-platform integration surface. |
 
 ### Accumulator
 
-`Builder` collects into `Buffer<Storage<Component>.Contiguous<Memory.Heap<Component>>>.Linear` — the lowest-level growable, `~Copyable`-capable linear storage in the ecosystem, below every collection family. It is deliberately not `Swift.Array` (which requires `Component: Copyable`) and not a concrete family container (which would couple the grammar to one family). A composing family drains the returned buffer into its own structure.
+`Builder` collects into `Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Component>>.Linear` — the lowest-level growable, `~Copyable`-capable linear storage in the ecosystem, below every collection family. It is deliberately not `Swift.Array` (which requires `Component: Copyable`) and not a concrete family container (which would couple the grammar to one family). A composing family drains the returned buffer into its own structure.
 
 ### What the grammar does not support
 
-- **`for` loops.** Swift's result-builder transform lowers a `for` loop through `buildArray(_: [partial])` — a `Swift.Array` of the partial result. The partial result is `Buffer<Storage<Component>.Contiguous<Memory.Heap<Component>>>.Linear`, which is itself `~Copyable`, so that array is illegal for any `Component`. Use an array literal or a `Swift.Sequence` (for `Copyable` elements), or imperative construction.
+- **`for` loops.** Swift's result-builder transform lowers a `for` loop through `buildArray(_: [partial])` — a `Swift.Array` of the partial result. The partial result is `Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Component>>.Linear`, which is itself `~Copyable`, so that array is illegal for any `Component`. Use an array literal or a `Swift.Sequence` (for `Copyable` elements), or imperative construction.
 - **`~Escapable` components.** The accumulator stores its elements, which requires them to be `Escapable`; a collect-and-return grammar inherently escapes the collected values.
 
 This package ships only the grammar (`Builder`) and the grow-and-build capability (`Buildable`). Per-family DSL integrations are a separate, later workstream.
@@ -129,7 +137,7 @@ Foundation-free.
 
 | Platform | Status |
 |----------|--------|
-| macOS 26 | Full support |
+| macOS 27 | Full support |
 | Linux | Full support |
 | Windows | Full support |
 | iOS / tvOS / watchOS / visionOS | Supported |

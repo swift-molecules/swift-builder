@@ -31,15 +31,15 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-initialization.git",
+            url: "https://github.com/swift-atoms/swift-initialization.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-storage.git",
+            url: "https://github.com/swift-molecules/swift-storage-memory.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-memory-heap.git",
+            url: "https://github.com/swift-molecules/swift-memory-small.git",
             branch: "main"
         ),
         .package(
@@ -60,10 +60,10 @@ let package = Package(
                     package: "swift-initialization"
                 ),
                 .product(
-                    name: "Storage Contiguous",
-                    package: "swift-storage"
+                    name: "Storage Memory",
+                    package: "swift-storage-memory"
                 ),
-                .product(name: "Memory Heap", package: "swift-memory-heap"),
+                .product(name: "Memory Small", package: "swift-memory-small"),
                 .product(
                     name: "Memory Allocator Primitive",
                     package: "swift-memory-allocation"

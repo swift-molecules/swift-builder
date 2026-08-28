@@ -1,16 +1,19 @@
 import Builder
 import Memory_Allocator_Primitive
-import Memory_Heap
-import Storage_Contiguous
+import Memory_Small
+import Storage_Memory
 
 extension Fixture {
 
     public struct Sink: ~Copyable {
 
-        public var storage: Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Fixture.Token>>.Linear
+        public var storage:
+            Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Fixture.Token>>.Linear
 
         public init() {
-            self.storage = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Fixture.Token>>.Linear(minimumCapacity: .zero)
+            self.storage = Buffer<
+                Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Fixture.Token>
+            >.Linear(minimumCapacity: .zero)
         }
     }
 }
