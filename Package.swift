@@ -35,17 +35,9 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-storage-memory.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-memory-small.git",
-            branch: "main"
-        ),
-        .package(
             url: "https://github.com/swift-molecules/swift-memory-allocation.git",
-            branch: "main"
-        ),
+            branch: "main", traits: ["MemorySmall"]),
+        .package(url: "https://github.com/swift-atoms/swift-storage.git", branch: "main", traits: ["Generational", "Memory"]),
     ],
     targets: [
         .target(
@@ -60,14 +52,11 @@ let package = Package(
                     package: "swift-initialization"
                 ),
                 .product(
-                    name: "Storage Memory",
-                    package: "swift-storage-memory"
-                ),
-                .product(name: "Memory Small", package: "swift-memory-small"),
-                .product(
-                    name: "Memory Allocator Primitive",
+                    name: "Memory Allocator",
                     package: "swift-memory-allocation"
                 ),
+                .product(name: "Storage", package: "swift-storage"),
+                .product(name: "Memory Small", package: "swift-memory-allocation"),
             ]
         ),
         .target(
@@ -83,7 +72,11 @@ let package = Package(
         ),
         .testTarget(
             name: "Builder Tests",
-            dependencies: ["Builder"]
+            dependencies: ["Builder",
+                .product(name: "Buffer Linear", package: "swift-buffer-linear"),
+                .product(name: "Memory Small", package: "swift-memory-allocation"),
+                .product(name: "Storage", package: "swift-storage"),
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]

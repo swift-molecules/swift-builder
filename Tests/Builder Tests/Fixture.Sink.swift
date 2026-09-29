@@ -1,7 +1,8 @@
-import Builder
-import Memory_Allocator_Primitive
-import Memory_Small
-import Storage_Memory
+public import Builder
+public import Buffer_Linear
+public import Memory_Allocator
+public import Memory_Small
+public import Storage
 
 extension Fixture {
 
